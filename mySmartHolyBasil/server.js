@@ -37,7 +37,6 @@ var dbObj = null;
 
 
 
-
 var mqttConnectOptions = {
     keepalive: 20,
     clientId: 'mqttjs_' + Math.random().toString(16).substr(2, 8),
@@ -93,7 +92,7 @@ mqttClient.on('message', function (topic, message) {
     temperature = array[1];
     humidity = array[2];
     timestamp = new Date();
-    millis = timestamp.getTime();
+    millis = new Date().getTime();
     db.insertService(db.get(), "networkLog", { timestamp: millis });
     var deserilizedData = "Status at " + timestamp + ": Moisture : " + moisture + " %,  Temperature : " + temperature + " C, " + " Humidity : " + humidity + ' %';
    

@@ -6,12 +6,14 @@ var constants = require('.././constants');
 const winston = require('winston');
 //winston.level =  'debug';
 
+
 var logger = new (winston.Logger)({
     transports: [
         new (winston.transports.Console)(),
         new (winston.transports.File)({ filename: constants.logDirPath + 'db.log' })
     ]
 });
+
 
 
 logger.level = 'debug';
@@ -25,6 +27,7 @@ const collectionName = 'myHolyBasilData';
 var state = {
     db: null,
 }
+
 
 exports.connect = function (url, done) {
     if (state.db) return done()
@@ -49,11 +52,21 @@ exports.insert = function (db,data) {
         });
    
 }
+
+exports.deleteService = function (db, tableName,data) {
+
+    db.collection(tableName).deleteOne(  data,   function (err, results) {
+            assert.equal(err, null);
+            logger.log('verbose', "Removed a document into the myHolyBasilData collection. " + results);
+        }
+    );
+
+}
 exports.insertService = function (db,tableName, data) {
 
     db.collection(tableName).insertOne(data, function (err, result) {
         assert.equal(err, null);
-        logger.log('verbose', "Inserted a document into the" + tableName +"collection. " + JSON.stringify(data));
+        logger.log('verbose', "Inserted a document into the" + tableName +" collection. " + JSON.stringify(data));
 
     });
 
