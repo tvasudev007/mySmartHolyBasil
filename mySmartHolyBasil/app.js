@@ -1,5 +1,6 @@
 ﻿'use strict';
 var express = require('express');
+var constants = require('./constants');
 var path = require('path');
 var favicon = require('serve-favicon');
 //var logger = require('morgan');
@@ -16,7 +17,7 @@ const winston = require('winston');
 var logger = new (winston.Logger)({
     transports: [
         new (winston.transports.Console)(),
-        new (winston.transports.File)({ filename: __dirname+'/log/logF.log' })
+        new (winston.transports.File)({ filename: constants.lofDirname+'express.log' })
     ]
 });
 logger.level = 'debug';

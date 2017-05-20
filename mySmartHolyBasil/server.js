@@ -2,6 +2,11 @@ var mqtt = require('mqtt');
 
 var app = require('./app');
 
+var db = require('./db/dbHandler');
+
+
+var constants = require('./constants');
+
 var ip = require("ip");
 
 const ipAddress = ip.address();
@@ -13,7 +18,7 @@ const winston = require('winston');
 var logger = new (winston.Logger)({
     transports: [
         new (winston.transports.Console)(),
-        new (winston.transports.File)({ filename: __dirname + '/log/logF.log' })
+        new (winston.transports.File)({ filename: constants.lofDirname + 'server.log' })
     ]
 });
 
@@ -26,6 +31,8 @@ const uid = uuid.v1();
 
 //MQTT Client
 var mqttBrokerUrl = "tcp://iot.eclipse.org:1883";
+
+
 
 
 var mqttConnectOptions = {
@@ -47,6 +54,10 @@ mqttClient.on('connect', function () {
     mqttClient.subscribe(subTopic, function () {
         logger.log('info', uid + " Subscribed to MQTT Topic : " + subTopic);
     });
+
+    
+
+    
 
 });
 
@@ -72,6 +83,8 @@ mqttClient.on('message', function (topic, message) {
     timestamp = new Date();
     var deserilizedData = "Status at " + timestamp + ": Moisture : " + moisture + " %,  Temperature : " + temperature + " C, " + " Humidity : " + humidity + ' %';
     logger.log('verbose', uid + " " + deserilizedData);
+
+    db.connect();
 
 
 });
