@@ -36,7 +36,7 @@ var mqttBrokerUrl = constants.mqttURL;
 var dbObj = null;
 
 
-var prevMoisture = 0;
+
 
 var mqttConnectOptions = {
     keepalive: 20,
@@ -45,9 +45,16 @@ var mqttConnectOptions = {
 };
 
 
-var subTopic = "myHolyBasil/moisture";
-var moisture, temperature, humidity, timestamp = 0;
+var subTopic = constants.subTopic;
+global.moisture = 0;
+global.temperature = 0;
+global.humidity = 0
+var timestamp = 0;
 
+var prevMoisture = 0;
+var prevHumidity = 0;
+var prevTemperature = 0;
+ 
 
 var mqttClient = mqtt.connect(mqttBrokerUrl, mqttConnectOptions);
 
@@ -86,20 +93,23 @@ mqttClient.on('message', function (topic, message) {
     temperature = array[1];
     humidity = array[2];
     timestamp = new Date();
+    millis = timestamp.getTime();
     var deserilizedData = "Status at " + timestamp + ": Moisture : " + moisture + " %,  Temperature : " + temperature + " C, " + " Humidity : " + humidity + ' %';
    
     var sensorData = {
-        "moisture": moisture, "temperature": temperature, "humidity": humidity, "timestamp": timestamp
+        "moisture": moisture, "temperature": temperature, "humidity": humidity, "timestamp": timestamp, "_id": millis
     }
     logger.log('verbose', uid + " " + JSON.stringify(sensorData));
     console.log("sensorData.moisture : " + sensorData.moisture + " prevMoisture : " + prevMoisture);
-    if (sensorData.moisture - prevMoisture > 2 || sensorData.moisture - prevMoisture < -2) {
+    if (sensorData.moisture - prevMoisture > 1 || sensorData.moisture - prevMoisture < -1 || sensorData.temperature - prevTemperature > 2 || sensorData.temperature - prevTemperature < - 2 || sensorData.humidity - prevHumidity > 5 || sensorData.humidity - prevHumidity < - 5) {
         db.insert(db.get(), sensorData); 
     }
     else {
         logger.log('debug', uid + "  Applied compression on Sensor data  ");
     }
     prevMoisture = sensorData.moisture;
+    prevTemperature = sensorData.temperature;
+    prevHumidity = sensorData.humidity;
        
 
 

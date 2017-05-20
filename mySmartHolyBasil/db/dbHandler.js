@@ -20,6 +20,7 @@ const assert = require('assert');
 const uuid = require('uuid');
 const uid = uuid.v1();
 
+const collectionName = 'myHolyBasilData';
 
 var state = {
     db: null,
@@ -41,12 +42,23 @@ exports.get = function () {
 
 exports.insert = function (db,data) {
     
-        db.collection('myHolyBasilData').insertOne({ data }, function (err, result) {
+        db.collection(collectionName).insertOne( data , function (err, result) {
             assert.equal(err, null);
             logger.log('verbose',"Inserted a document into the myHolyBasilData collection. " + JSON.stringify(data) );
             
         });
    
+}
+exports.fetchLatest = function (db,done) {
+    var collection = db.collection(collectionName);
+    var cursor = collection.find().limit(1).sort({ $natural: -1 });
+    
+    cursor.toArray(function (err, results) {
+        if (err) throw err;
+        console.log('%j', results);
+        done(results);
+    });
+    
 }
 
 exports.close = function (done) {

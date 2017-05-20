@@ -5,6 +5,13 @@ const sensorDBURI = "mongodb://myConnectedDB:myConnectedDBpass@myconnectedholyba
 const logDirectoryPath = __dirname + '/log/';
 
 const mqttBrokerURL = "tcp://iot.eclipse.org:1883";
+const subscribptionTopic = "myHolyBasil/moisture";
+
+
+
+var accountSid = 'AC648d6e480e556571b1203dc06e6875ac'; // Your Account SID from www.twilio.com/console
+var authToken = 'e925cbe022799c01dc9709c200a819bd';   // Your Auth Token from www.twilio.com/console
+const twilioOperatorNumber = "+13343393143";      //Twilio valid number
 
 
 Object.defineProperty(exports, "dbURL", {
@@ -23,6 +30,34 @@ Object.defineProperty(exports, "logDirPath", {
 
 Object.defineProperty(exports, "mqttURL", {
     value: mqttBrokerURL,
+    enumerable: true,
+    writable: false,
+    configurable: false
+});
+
+Object.defineProperty(exports, "subTopic", {
+    value: subscribptionTopic,
+    enumerable: true,
+    writable: false,
+    configurable: false
+});
+
+Object.defineProperty(exports, "accountSid", {
+    value: accountSid,
+    enumerable: true,
+    writable: false,
+    configurable: false
+});
+
+Object.defineProperty(exports, "authToken", {
+    value: authToken,
+    enumerable: true,
+    writable: false,
+    configurable: false
+});
+
+Object.defineProperty(exports, "operatorNumber", {
+    value: twilioOperatorNumber,
     enumerable: true,
     writable: false,
     configurable: false
