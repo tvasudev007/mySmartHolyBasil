@@ -18,13 +18,6 @@ const ipAddress = ip.address();
 const winston = require('winston');
 //winston.level =  'debug';
 
-var fs = require('fs');
-var dir = './log';
-
-if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir);
-}
-
 var logger = new (winston.Logger)({
     transports: [
         new (winston.transports.Console)(),
