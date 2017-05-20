@@ -1,3 +1,5 @@
 ﻿# mySmartHolyBasil
 
+Subscribes on MQTT
+
 
