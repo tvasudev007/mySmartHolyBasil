@@ -84,9 +84,9 @@ mqttClient.on('error', function () {
 });
 
 mqttClient.on('message', function (topic, message) {
-    // message is Buffer 
-    var data = message.toString();
-    //console.log("data received from Basil Plant : " + data );
+    
+    var data = message.toString();  // message is Buffer 
+    
     var array = data.split(',');
 
     moisture = parseFloat(array[0]);
@@ -94,6 +94,7 @@ mqttClient.on('message', function (topic, message) {
     humidity = array[2];
     timestamp = new Date();
     millis = timestamp.getTime();
+    db.insertService(db.get(), "networkLog", { timestamp: millis });
     var deserilizedData = "Status at " + timestamp + ": Moisture : " + moisture + " %,  Temperature : " + temperature + " C, " + " Humidity : " + humidity + ' %';
    
     var sensorData = {

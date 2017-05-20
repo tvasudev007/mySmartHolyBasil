@@ -49,6 +49,15 @@ exports.insert = function (db,data) {
         });
    
 }
+exports.insertService = function (db,tableName, data) {
+
+    db.collection(tableName).insertOne(data, function (err, result) {
+        assert.equal(err, null);
+        logger.log('verbose', "Inserted a document into the" + tableName +"collection. " + JSON.stringify(data));
+
+    });
+
+}
 exports.fetchLatest = function (db,done) {
     var collection = db.collection(collectionName);
     var cursor = collection.find().limit(1).sort({ $natural: -1 });
