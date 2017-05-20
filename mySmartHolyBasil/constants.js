@@ -14,8 +14,6 @@ const operatorEmailId = "myconnectedthings007@gmail.com";
 const operatorPassword = "tvasudev007";
 
 
-
-
 Object.defineProperty(exports, "dbURL", {
     value: sensorDBURI,
     enumerable: true,
