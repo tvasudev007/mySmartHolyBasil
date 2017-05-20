@@ -17,7 +17,7 @@ const winston = require('winston');
 var logger = new (winston.Logger)({
     transports: [
         new (winston.transports.Console)(),
-        new (winston.transports.File)({ filename: constants.lofDirname+'express.log' })
+        new (winston.transports.File)({ filename: constants.logDirPath+'express.log' })
     ]
 });
 logger.level = 'debug';

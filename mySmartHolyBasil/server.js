@@ -18,7 +18,7 @@ const winston = require('winston');
 var logger = new (winston.Logger)({
     transports: [
         new (winston.transports.Console)(),
-        new (winston.transports.File)({ filename: constants.lofDirname + 'server.log' })
+        new (winston.transports.File)({ filename: constants.logDirPath + 'server.log' })
     ]
 });
 
@@ -30,10 +30,13 @@ const uuid = require('uuid');
 const uid = uuid.v1();
 
 //MQTT Client
-var mqttBrokerUrl = "tcp://iot.eclipse.org:1883";
+var mqttBrokerUrl = constants.mqttURL;
+
+//db connection
+var dbObj = null;
 
 
-
+var prevMoisture = 0;
 
 var mqttConnectOptions = {
     keepalive: 20,
@@ -50,14 +53,16 @@ var mqttClient = mqtt.connect(mqttBrokerUrl, mqttConnectOptions);
 
 mqttClient.on('connect', function () {
     logger.log('info', uid + " Connected to MQTT Broker : " + mqttBrokerUrl);
+    // Connect to Mongo on start
+    db.connect(constants.dbURL, function (err) {
 
+        assert.equal(err, null);
+        logger.log('info', uid + " Connected to MongoDB : " + constants.dbURL);
+
+    })
     mqttClient.subscribe(subTopic, function () {
         logger.log('info', uid + " Subscribed to MQTT Topic : " + subTopic);
     });
-
-    
-
-    
 
 });
 
@@ -82,9 +87,20 @@ mqttClient.on('message', function (topic, message) {
     humidity = array[2];
     timestamp = new Date();
     var deserilizedData = "Status at " + timestamp + ": Moisture : " + moisture + " %,  Temperature : " + temperature + " C, " + " Humidity : " + humidity + ' %';
-    logger.log('verbose', uid + " " + deserilizedData);
-
-    db.connect();
+   
+    var sensorData = {
+        "moisture": moisture, "temperature": temperature, "humidity": humidity, "timestamp": timestamp
+    }
+    logger.log('verbose', uid + " " + JSON.stringify(sensorData));
+    console.log("sensorData.moisture : " + sensorData.moisture + " prevMoisture : " + prevMoisture);
+    if (sensorData.moisture - prevMoisture > 2 || sensorData.moisture - prevMoisture < -2) {
+        db.insert(db.get(), sensorData); 
+    }
+    else {
+        logger.log('debug', uid + "  Applied compression on Sensor data  ");
+    }
+    prevMoisture = sensorData.moisture;
+       
 
 
 });
