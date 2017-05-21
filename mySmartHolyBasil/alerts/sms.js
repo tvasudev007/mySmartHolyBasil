@@ -19,9 +19,9 @@ const assert = require('assert');
 const uuid = require('uuid');
 const uid = uuid.v1();
 
-constants.accountSid = accountSid;
+accountSid = constants.accountSid;
 
-constants.authToken = authToken;
+authToken = constants.authToken;
 
 
 
@@ -34,5 +34,5 @@ exports.sendSMS = function (userNumber, operatorNumber, smsContent ) {
         body: smsContent,
         to: userNumber,  // Text this number
         from: constants.operatorNumber // From a valid Twilio number
-    }).then((message) => logger.log('info', "SMS sent: " + message);
+    }).then((message) => logger.log('info', "SMS sent: " + message));
 }

@@ -30,12 +30,12 @@ var state = {
 
 
 exports.connect = function (url, done) {
-    if (state.db) return done()
+    if (state.db) return done(null,state.db)
 
     MongoClient.connect(url, function (err, db) {
-        if (err) return done(err)
+        if (err) return done(err,null)
         state.db = db
-        done()
+        done(err,state.db)
     })
 }
 
@@ -100,12 +100,22 @@ exports.updateService = function (db, collectionName, id,document, done) {
         done(err, response);
         });
 }
+
 exports.fetchService = function (db,collectionName,id, done) {
     var collection = db.collection(collectionName);
    
     collection.findOne({ "id": id }, function (err, results) {
         done(err, results);
     })
+
+}
+
+exports.fetchAllService = function (db,fields, collectionName, done) {
+    var collection = db.collection(collectionName);
+
+    collection.find({}, fields).toArray(function (err, results) {
+        done(err, results)
+    });
 
 }
 

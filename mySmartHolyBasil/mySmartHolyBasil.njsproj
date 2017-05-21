@@ -30,6 +30,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="alerts\email.js" />
+    <Compile Include="alerts\alertsSender.js">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="alerts\sms.js" />
     <Compile Include="app.js" />
     <Compile Include="constants.js" />

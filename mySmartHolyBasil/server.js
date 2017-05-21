@@ -2,15 +2,22 @@ var mqtt = require('mqtt');
 
 var app = require('./app');
 
-var db = require('./db/dbHandler');
 
 var EventEmitter = require("events").EventEmitter;
+global.calibrateEvent = new EventEmitter();
+
+
+var db = require('./db/dbHandler');
+
+
 
 var constants = require('./constants');
 
 var ip = require("ip");
 
 var util = require('./utilities/utilFunctions');
+
+var alertSender = require('./alerts/alertsSender');
 
 const ipAddress = ip.address();
 
@@ -65,7 +72,7 @@ global.criThreshold = 30;
 
 global.variance = 5;
 
-global.calibrateEvent = new EventEmitter();
+
  
 
 var mqttClient = mqtt.connect(mqttBrokerUrl, mqttConnectOptions);
@@ -109,12 +116,18 @@ mqttClient.on('message', function (topic, message) {
     moisture = Math.round(util.rescale(moisture, minVal, maxVal, 0, 100));
     db.insertService(db.get(), "networkLog", { timestamp: millis });
     var deserilizedData = "Status at " + timestamp + ": Moisture : " + moisture + " %,  Temperature : " + temperature + " C, " + " Humidity : " + humidity + ' %';
-   
+    if (moisture < warnThreshold){
+        calibrateEvent.emit("warning", moisture);
+    }
+    else if (moisture < warnThreshold) {
+        calibrateEvent.emit("critical", moisture);
+    }
+    
     var sensorData = {
         "moisture": moisture, "temperature": temperature, "humidity": humidity, "timestamp": timestamp, "_id": millis
     }
     logger.log('verbose', uid + " " + JSON.stringify(sensorData));
-    console.log("sensorData.moisture : " + sensorData.moisture + " prevMoisture : " + prevMoisture);
+    //console.log("sensorData.moisture : " + sensorData.moisture + " prevMoisture : " + prevMoisture);
     if (sensorData.moisture - prevMoisture > variance || prevMoisture - sensorData.moisture > variance || sensorData.temperature - prevTemperature > 2 || sensorData.temperature - prevTemperature < - 2 || sensorData.humidity - prevHumidity > 5 || sensorData.humidity - prevHumidity < - 5) {
         db.insert(db.get(), sensorData); 
     }
@@ -141,8 +154,11 @@ mqttClient.on('close', function () {
 calibrateEvent.on("calibrate", function (id) {
     //console.log("EVENT " +id);
     db.fetchService(db.get(), "assetCollection", id, function (err, response) {
-        global.minVal = response.low;
-        global.maxVal = response.high;
+        global.minVal = response.calibration.low;
+        global.maxVal = response.calibration.high;
+        global.variance = response.variance;
+        global.warnThreshold = response.warningThreshold;
+        global.criThreshold = response.criticaThreshold;
     })
 });
 
