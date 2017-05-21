@@ -4,10 +4,13 @@ var app = require('./app');
 
 var db = require('./db/dbHandler');
 
+var EventEmitter = require("events").EventEmitter;
 
 var constants = require('./constants');
 
 var ip = require("ip");
+
+var util = require('./utilities/utilFunctions');
 
 const ipAddress = ip.address();
 
@@ -53,6 +56,16 @@ var timestamp = 0;
 var prevMoisture = 0;
 var prevHumidity = 0;
 var prevTemperature = 0;
+
+global.minVal = 10;
+global.maxVal = 55;
+
+global.warnThreshold = 50;
+global.criThreshold = 30;
+
+global.variance = 5;
+
+global.calibrateEvent = new EventEmitter();
  
 
 var mqttClient = mqtt.connect(mqttBrokerUrl, mqttConnectOptions);
@@ -89,10 +102,11 @@ mqttClient.on('message', function (topic, message) {
     var array = data.split(',');
 
     moisture = parseFloat(array[0]);
-    temperature = array[1];
-    humidity = array[2];
+    temperature = parseFloat(array[1]);
+    humidity = parseFloat(array[2]);
     timestamp = new Date();
     millis = new Date().getTime();
+    moisture = Math.round(util.rescale(moisture, minVal, maxVal, 0, 100));
     db.insertService(db.get(), "networkLog", { timestamp: millis });
     var deserilizedData = "Status at " + timestamp + ": Moisture : " + moisture + " %,  Temperature : " + temperature + " C, " + " Humidity : " + humidity + ' %';
    
@@ -101,12 +115,13 @@ mqttClient.on('message', function (topic, message) {
     }
     logger.log('verbose', uid + " " + JSON.stringify(sensorData));
     console.log("sensorData.moisture : " + sensorData.moisture + " prevMoisture : " + prevMoisture);
-    if (sensorData.moisture - prevMoisture > 1 || sensorData.moisture - prevMoisture < -1 || sensorData.temperature - prevTemperature > 2 || sensorData.temperature - prevTemperature < - 2 || sensorData.humidity - prevHumidity > 5 || sensorData.humidity - prevHumidity < - 5) {
+    if (sensorData.moisture - prevMoisture > variance || prevMoisture - sensorData.moisture > variance || sensorData.temperature - prevTemperature > 2 || sensorData.temperature - prevTemperature < - 2 || sensorData.humidity - prevHumidity > 5 || sensorData.humidity - prevHumidity < - 5) {
         db.insert(db.get(), sensorData); 
     }
     else {
         logger.log('debug', uid + "  Applied compression on Sensor data  ");
     }
+
     prevMoisture = sensorData.moisture;
     prevTemperature = sensorData.temperature;
     prevHumidity = sensorData.humidity;
@@ -121,6 +136,16 @@ mqttClient.on('close', function () {
 
     logger.log('debug', uid + " MQTT Connection closed");
 }); 
+
+
+calibrateEvent.on("calibrate", function (id) {
+    //console.log("EVENT " +id);
+    db.fetchService(db.get(), "assetCollection", id, function (err, response) {
+        global.minVal = response.low;
+        global.maxVal = response.high;
+    })
+});
+
 
 var server = app.listen(3000, function () {
     //console.log("Calling app.listen's callback function.");

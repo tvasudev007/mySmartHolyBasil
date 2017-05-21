@@ -8,7 +8,7 @@ var favicon = require('serve-favicon');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-var routes = require('./routes/data');
+var data = require('./routes/data');
 var users = require('./routes/users'); 
 var alertSubscribe = require('./routes/alertSubscribe'); 
 var calibrate = require('./routes/calibrate'); 
@@ -50,7 +50,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/data', routes);
+app.use('/data', data);
 app.use('/users', users);
 app.use('/subscribe', alertSubscribe);
 app.use('/calibrate', calibrate);

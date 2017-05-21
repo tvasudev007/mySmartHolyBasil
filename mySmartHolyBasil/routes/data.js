@@ -27,7 +27,7 @@ router.get('/temperature', function (req, res) {
 
 router.get('/humidity', function (req, res) {
 
-    res.send("latest humidty Value is : " + humidty)
+    res.send("latest humidty Value is : " + humidity)
     //res.render('index', { title: 'Express' });
 });
 

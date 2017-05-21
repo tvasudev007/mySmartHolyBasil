@@ -35,6 +35,9 @@
     <Compile Include="constants.js" />
     <Compile Include="db\dbevents.js" />
     <Compile Include="db\dbHandler.js" />
+    <Compile Include="events\userEvents.js">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="routes\alertSubscribe.js" />
     <Compile Include="routes\data.js" />
     <Compile Include="routes\calibrate.js">
@@ -43,6 +46,9 @@
     <Compile Include="routes\users.js" />
     <Compile Include="bin\www" />
     <Compile Include="server.js" />
+    <Compile Include="utilities\utilFunctions.js">
+      <SubType>Code</SubType>
+    </Compile>
     <Content Include="log\db.log" />
     <Content Include="log\server.log" />
     <Content Include="package.json" />
@@ -58,6 +64,8 @@
     <Folder Include="bin\" />
     <Folder Include="db\" />
     <Folder Include="log\" />
+    <Folder Include="events\" />
+    <Folder Include="utilities\" />
     <Folder Include="public\" />
     <Folder Include="public\images\" />
     <Folder Include="public\javascripts\" />
