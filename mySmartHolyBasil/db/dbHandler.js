@@ -28,7 +28,10 @@ var state = {
     db: null,
 }
 
-
+MongoClient.connect(constants.dbURL, function (err, db) {
+    if (err) return done(err, null)
+    state.db = db
+})
 exports.connect = function (url, done) {
     if (state.db) return done(null,state.db)
 
@@ -53,11 +56,12 @@ exports.insert = function (db,data) {
    
 }
 
-exports.deleteService = function (db, tableName,data) {
+exports.deleteService = function (db, tableName,data,done) {
 
-    db.collection(tableName).deleteOne(  data,   function (err, results) {
+    db.collection(tableName).deleteOne( data,   function (err, results) {
             assert.equal(err, null);
             logger.log('verbose', "Removed a document into the myHolyBasilData collection. " + results);
+            done(err, results);
         }
     );
 

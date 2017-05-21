@@ -26,15 +26,19 @@ var smtpTransport = nodemailer.createTransport({
     tls: { rejectUnauthorized: false }
 });
 
-exports.sendEmail = function (address, subject, message) {
-    var mailOptions = { to: address, subject: subject, text: message }
+exports.sendEmail = function (userEmailId, subject, message) {
+    var mailOptions = { to: userEmailId, subject: subject, text: message }
 
-    smtpTransport.sendMail(mailOptions, function (error, response) {
-        if (error) {
-            logger.log('error', "Email sent: " + response.message);
+    smtpTransport.sendMail(mailOptions, function (err, response) {
+        try {
+            assert.equal(err, null);
+            logger.log('info', "Email sent: " + response);
         }
-        else {
-            logger.log('info',"Email sent: " + response.message);
+        catch (err) {
+            console.log(err);
         }
+        
+       
+       
     });
 }

@@ -1,16 +1,13 @@
 'use strict';
 var express = require('express');
 var router = express.Router();
-  
+var db = require('../db/dbHandler');  
+var assert = require('assert');
 
 /* GET home page. */
 router.get('/', function (req, res) {
 
-    
-        res.send("Welcome to My Connected Holy Basil Subscriber service");
-    
-
-    //res.render('index', { title: 'Express' });
+    res.send("Welcome to My Connected Holy Basil Subscriber service");
 });
 
 router.get('/list', function (req, res) {
@@ -18,10 +15,7 @@ router.get('/list', function (req, res) {
     db.fetchService(db.get(), "alertSubscribers", null, function (err,response) {
         res.send({ "SubscribtionList": response});
     });
-    
-
-
-    //res.render('index', { title: 'Express' });
+     //res.render('index', { title: 'Express' });
 });
 
 router.post('/notification', function (req, res) {
@@ -32,9 +26,12 @@ router.post('/notification', function (req, res) {
 
 
 router.post('/remove', function (req, res) {
-
-    db.deleteService(db.get(), "alertSubscribers", req.body)
-    res.send("Unsubscribed to My Connected Holy Basil Notification service");
+    
+    db.deleteService(db.get(), "alertSubscribers", req.body, function (err, response) {
+        assert.equal(err, null);
+        res.send("Unsubscribed to My Connected Holy Basil Notification service");
+    })
+    
 });
 
 

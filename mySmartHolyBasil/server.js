@@ -1,14 +1,13 @@
-var mqtt = require('mqtt');
 
-var app = require('./app');
+var db = require('./db/dbHandler');
+
+var mqtt = require('mqtt');
 
 
 var EventEmitter = require("events").EventEmitter;
 global.calibrateEvent = new EventEmitter();
 
-
-var db = require('./db/dbHandler');
-
+var app = require('./app');
 
 
 var constants = require('./constants');
@@ -119,7 +118,8 @@ mqttClient.on('message', function (topic, message) {
     if (moisture < warnThreshold){
         calibrateEvent.emit("warning", moisture);
     }
-    else if (moisture < warnThreshold) {
+    else if (moisture < criThreshold) {
+        console.log("critical");
         calibrateEvent.emit("critical", moisture);
     }
     
@@ -168,4 +168,4 @@ var server = app.listen(3000, function () {
     var host = server.address().address;
     var port = server.address().port;
     logger.log('debug', uid + " Connected Things App started & listening at" + ipAddress + ":" + port);
-});
+}); 
