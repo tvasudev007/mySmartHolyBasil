@@ -6,16 +6,17 @@ const assert = require('assert');
 
 
 /* GET home page. */
-router.get('/', function (req, res) {
-
-    res.send("Calibrate your Thing");
+router.get('/:id', function (req, res) {
+    
+    db.fetchService(db.get(), "assetCollection", req.params.id, function (err, response) {
+        
+        res.send(response);
+    })
+    
     
 });
 
-
-
-
-router.post('/mapping', function (req, res) {
+router.post('/', function (req, res) {
 
    
     if (req.body.id != null) {
@@ -27,14 +28,14 @@ router.post('/mapping', function (req, res) {
             }
         
             else if (response==null){
-                db.insertServiceCallback(db.get(), "assetCollection", req.body, function (err, response) {
+                db.insertServiceCallback(db.get(), "assetCollection", { $set: req.body }, function (err, response) {
                     assert.equal(err, null);
                     calibrateEvent.emit("calibrate", req.body.id);
                     res.send("Calibrated your Thing with ID:" + req.body.id);
                 });
             }
             else {
-                db.updateService(db.get(), "assetCollection", req.body.id,req.body, function (err, response) {
+                db.updateService(db.get(), "assetCollection", req.body.id, { $set: req.body }, function (err, response) {
                     assert.equal(err, null);
                     calibrateEvent.emit("calibrate", req.body.id);
                     res.send("Re-calibrated your Thing with ID:" + req.body.id);
