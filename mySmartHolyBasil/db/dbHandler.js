@@ -62,12 +62,22 @@ exports.deleteService = function (db, tableName,data) {
     );
 
 }
-exports.insertService = function (db,tableName, data) {
+exports.insertService = function (db,collectionName, data) {
+
+    db.collection(collectionName).insertOne(data, function (err, result) {
+        assert.equal(err, null);
+        logger.log('verbose', " Inserted a document into the " + collectionName +" collection. " + JSON.stringify(data));
+
+    });
+
+}
+
+exports.insertServiceCallback = function (db, tableName, data,callbck) {
 
     db.collection(tableName).insertOne(data, function (err, result) {
         assert.equal(err, null);
-        logger.log('verbose', "Inserted a document into the" + tableName +" collection. " + JSON.stringify(data));
-
+        logger.log('verbose', "Inserted a document into the" + tableName + " collection. " + JSON.stringify(data));
+        callbck(err, result);
     });
 
 }
@@ -77,10 +87,26 @@ exports.fetchLatest = function (db,done) {
     
     cursor.toArray(function (err, results) {
         if (err) throw err;
-        console.log('%j', results);
+        //console.log('%j', results);
         done(results);
     });
     
+}
+
+exports.updateService = function (db, collectionName, id,document, done) {
+    var collection = db.collection(collectionName);
+
+    collection.update({ "id": id }, document , function (err, response) {
+        done(err, response);
+        });
+}
+exports.fetchService = function (db,collectionName,id, done) {
+    var collection = db.collection(collectionName);
+   
+    collection.findOne({ "id": id }, function (err, results) {
+        done(err, results);
+    })
+
 }
 
 exports.close = function (done) {

@@ -11,6 +11,7 @@ var bodyParser = require('body-parser');
 var routes = require('./routes/data');
 var users = require('./routes/users'); 
 var alertSubscribe = require('./routes/alertSubscribe'); 
+var calibrate = require('./routes/calibrate'); 
 
 
 const winston = require('winston');
@@ -52,6 +53,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/data', routes);
 app.use('/users', users);
 app.use('/subscribe', alertSubscribe);
+app.use('/calibrate', calibrate);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

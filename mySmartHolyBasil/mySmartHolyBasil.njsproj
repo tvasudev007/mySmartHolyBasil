@@ -29,20 +29,35 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="alerts\email.js" />
+    <Compile Include="alerts\sms.js" />
     <Compile Include="app.js" />
-    <Compile Include="routes\index.js" />
+    <Compile Include="constants.js" />
+    <Compile Include="db\dbevents.js" />
+    <Compile Include="db\dbHandler.js" />
+    <Compile Include="routes\alertSubscribe.js" />
+    <Compile Include="routes\data.js" />
+    <Compile Include="routes\calibrate.js">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="routes\users.js" />
     <Compile Include="bin\www" />
+    <Compile Include="server.js" />
+    <Content Include="log\db.log" />
+    <Content Include="log\server.log" />
     <Content Include="package.json" />
+    <Content Include="public\index.html" />
     <Content Include="public\stylesheets\main.css" />
     <Content Include="README.md" />
-    <Content Include="TextFile1.txt" />
     <Content Include="views\index.pug" />
     <Content Include="views\layout.pug" />
     <Content Include="views\error.pug" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="alerts\" />
     <Folder Include="bin\" />
+    <Folder Include="db\" />
+    <Folder Include="log\" />
     <Folder Include="public\" />
     <Folder Include="public\images\" />
     <Folder Include="public\javascripts\" />
