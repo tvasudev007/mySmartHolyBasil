@@ -4,7 +4,7 @@ const sensorDBURI = "mongodb://myConnectedDB:myConnectedDBpass@myconnectedholyba
 const logDirectoryPath = __dirname + '/log/';
 
 const mqttBrokerURL = "tcp://iot.eclipse.org:1883";
-const subscribptionTopic = "myHolyBasil/moisture";
+const subscribptionTopic = "myHolyBasil/moisture1";
 
 const accountSid = 'AC648d6e480e556571b1203dc06e6875ac'; // Your Account SID from www.twilio.com/console
 const authToken = 'e925cbe022799c01dc9709c200a819bd';   // Your Auth Token from www.twilio.com/console

@@ -15,7 +15,7 @@
   See the License for the specific language governing permissions and
   limitations under the License
 -->
-<html lang="en" xmlns="http://www.w3.org/1999/html" ng-app="app">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
     <link rel="icon" type="image/png" href="images/DB_16х16.png">
     <meta charset="utf-8">
@@ -50,49 +50,28 @@
     <link rel="stylesheet" href="css/lib/getmdl-select.min.css">
     <link rel="stylesheet" href="css/lib/nv.d3.css">
     <link rel="stylesheet" href="css/application.css">
-	
-	
     <!-- endinject -->
+
+</head>
+<body>
+	<div class="mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
 	
-	<!-- inject:js -->
-
-<!-- endinject -->
-
-<script src="js/angular.js"></script> 
-<script src="js/angular-ui-router.min.js"></script> 
-
- <script src="scripts/app.js"></script> 
- <script src="scripts/controllers.js"></script>   
-  	<!-- <script src="scripts/services.js"></script> -->
- <script src="scripts/routes.js"></script> 
-
-  	<!-- <script src="scripts/directives.js"></script> -->
 	
+	</div>
+    
+
+<!-- inject:js -->
 <script src="js/d3.js"></script>
 <script src="js/getmdl-select.min.js"></script>
 <script src="js/material.js"></script>
 <script src="js/nv.d3.js"></script>
 <script src="js/widgets/employer-form/employer-form.js"></script>
 <script src="js/widgets/line-chart/line-chart-nvd3.js"></script>
-<!-- <script src="js/widgets/map/maps.js"></script> -->
+<script src="js/widgets/map/maps.js"></script>
 <script src="js/widgets/pie-chart/pie-chart-nvd3.js"></script>
 <script src="js/widgets/table/table.js"></script>
 <script src="js/widgets/todo/todo.js"></script>
-
-</head>
-<body >
-
-	<div ui-view="noMenu" ></div>
-
-	<div class="mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header is-small-screen">
-		<div ui-view="menu"></div>
-		
-		
-		<div ui-view="page"></div> 
-	
-	</div>
-    
-
+<!-- endinject -->
 
 </body>
 </html>
