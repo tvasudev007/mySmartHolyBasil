@@ -6,8 +6,56 @@ angular.module('app.controllers', [])
 	
 })
 
-.controller('dashboardCtrl', function($scope,$rootScope,$window) {
-	
+    .controller('dashboardCtrl', function ($scope, $rootScope, $window, fetchKPIData,$interval) {
+        $scope.temperature = 28;
+        $scope.humidity = 60;
+        $scope.moisture = 20;
+        console.log();
+
+       // $scope.latestData = { "_id":1496598664174, "moisture":50, "temperature":30, "humidity":60, "timestamp":"2017-06-04T17:51:04.174Z" }
+        fetchKPIData.getLatestValue().then(function (res) {
+            console.log(res.data);
+            latestData = res.data;
+            $scope.latestData = latestData[0];
+
+        }, function (err) {
+            console.log(err);
+        })
+            
+        stop = $interval(function () {
+            $scope.graphAwesome.push({ x: 12, y: $scope.latestData.moisture });
+            fetchKPIData.getLatestValue().then(function (res) {
+                //console.log(res.data);
+                latestData = res.data;
+                $scope.latestData = latestData[0];
+               // var currentTime = new Date().getMilliseconds();
+                var data = [{
+      values: [{ x: 0, y: 0 }],
+      key: 'Moisture',
+      color: 'rgb(80, 150, 215)'
+    }, {
+      values: [{ x: 0, y: 0 }],
+      key: 'Temperature',
+      color: 'rgb(0, 188, 212)',
+      fillOpacity: 0.00001,
+      area: true
+    }, {
+      values: [{ x: 0, y: 0 }],
+      key: 'Humidity',
+      color: 'rgb(255, 82, 82)'
+    }];
+    var lineChartContainer = document.querySelector('.line-chart__container');
+    if (lineChartContainer) {
+     // var lineChart = new LineChart(7, '#4a4a4a', 20, data, nv);
+     
+    }
+console.log("drawing");
+                
+            }, function (err) {
+                console.log(err);
+            });
+        }, 5000);
+       
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
@@ -45,7 +93,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         key: '_addAxisLabels',
         value: function _addAxisLabels() {
           d3.selectAll('.line-chart__container svg .y-axis-label').remove();
-          d3.select('.line-chart__container svg').append('text').attr('class', 'y-axis-label').attr('x', '-72').attr('y', '12').attr('transform', 'rotate(-90)').text('REVENUE');
+          d3.select('.line-chart__container svg').append('text').attr('class', 'y-axis-label').attr('x', '-72').attr('y', '12').attr('transform', 'rotate(-90)').text('KPI');
           d3.select('.line-chart__container svg').append('text').attr('class', 'x-axis-label').text('TIME');
         }
       }, {
@@ -170,77 +218,48 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: '_calcFirstGraph',
         value: function _calcFirstGraph(i) {
-          var INTERVAL_1 = 28,
-              INTERVAL_2 = 71,
-              INTERVAL_3 = 110;
-          var graphAwesome = this.data[0].values;
-
-          if (i < INTERVAL_1) {
-            graphAwesome.push({ x: i / 10, y: (.0343 * i * i - .67 * i) / 14 });
-          } else {
-            if (i < INTERVAL_2) {
-              graphAwesome.push({ x: i / 10, y: -(i - 71) * (i - 71) / 1026 + 2.378 });
-            } else {
-              if (i < INTERVAL_3) {
-                graphAwesome.push({ x: i / 10, y: -4 / (i - 43) + 2.53 });
-              } else {
-                graphAwesome.push({ x: i / 10, y: (i - 114) * (i - 114) * (i - 114) / 13000 + 2.476 });
-              }
-            }
-          }
+          
+          $scope.graphAwesome = this.data[0].values;
+         // $scope.graphAwesome.push({ x: i / 10, y: (.0343 * i * i - .67 * i) / 14 });
+         
         }
       }, {
         key: '_calcSecondGraph',
         value: function _calcSecondGraph(i) {
-          var INTERVAL_1 = 30,
-              INTERVAL_2 = 82;
-          var graphGood = this.data[1].values;
-
-          if (i < INTERVAL_1) {
-            graphGood.push({ x: i / 10, y: (.03255 * i * i - .96 * i) / 16 });
-          } else {
-            if (i < INTERVAL_2) {
-              graphGood.push({ x: i / 10, y: (-.01055 * (i - 80.3) * (i - 80.3) + 27) / 15 });
-            } else {
-              graphGood.push({ x: i / 10, y: (i / 2 - 45) * (i / 2 - 45) * (i / 2 - 45) / 15000 + 1.805 });
-            }
-          }
+          
+          $scope.graphGood = this.data[1].values;
+        //  $scope.graphGood.push({ x: i / 10, y: (.03255 * i * i - .96 * i) / 16 });
+          
         }
       }, {
         key: '_calcThirdGraph',
         value: function _calcThirdGraph(i) {
-          var INTERVAL_1 = 31,
-              INTERVAL_2 = 103;
+         
           var graphFail = this.data[2].values;
 
-          if (i < INTERVAL_1) {
-            graphFail.push({ x: i / 10, y: (.02255 * i * i - .91 * i) / 13 });
-          } else {
-            if (i < INTERVAL_2) {
-              graphFail.push({ x: i / 10, y: .82 * Math.sin((i - 45) / 21) });
-            } else {
-              graphFail.push({ x: i / 10, y: -(i - 130) * (i - 130) * (i - 130) / 64000 });
-            }
-          }
+         
+          //  graphFail.push({ x: i / 10, y: (.02255 * i * i - .91 * i) / 13 });
+          
         }
-      }]);
+      }
+      ]);
 
       return LineChart;
     })();
 
     var data = [{
       values: [{ x: 0, y: 0 }],
-      key: 'Awesome',
+      key: 'Moisture',
       color: 'rgb(80, 150, 215)'
     }, {
       values: [{ x: 0, y: 0 }],
-      key: 'Good',
+      key: 'Temperature',
       color: 'rgb(0, 188, 212)',
       fillOpacity: 0.00001,
       area: true
     }, {
       values: [{ x: 0, y: 0 }],
-      key: 'Fail',
+      key: 'Humidity',
       color: 'rgb(255, 82, 82)'
     }];
     var lineChartContainer = document.querySelector('.line-chart__container');
@@ -270,15 +289,20 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           id: 1651644545,
           completed: ''
         }, {
-          title: 'Implement 30% of my feature',
+          title: 'Implement full feedback control using water pump',
           id: 1651646545,
           completed: ''
         }, {
-          title: 'Fencing',
+          title: 'Implement subscribers list',
           id: 5451646545,
           completed: 'checked'
-        }, {
-          title: 'Read an article about Test-Driven Development',
+        },
+          {
+            title: "Implement machine vision to visually monitor the plant's health",
+            id: 5451646545,
+            completed: ''
+        },{
+          title: 'Implement service to add new connected thing & user profile',
           id: 5428646545,
           completed: ''
         }];
@@ -330,7 +354,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }]);
 
       return Model;
-    })();
+    })(); 
 
     var View = (function () {
       function View() {

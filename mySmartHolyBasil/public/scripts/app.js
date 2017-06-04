@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('app', ['ui.router','app.controllers', 'app.routes']) 
+angular.module('app', ['ui.router', 'app.services','app.controllers', 'app.routes']) 
 
 .run(function($rootScope, $timeout) {
   

@@ -18,7 +18,7 @@
                             </div>
                         </div>
                         <div class="mdl-card__supporting-text mdl-card--expand" id="moisture">
-                            <p class="weather-temperature">40<sup>&#37;</sup></p>
+                            <p class="weather-temperature">{{latestData.moisture}}<sup>&#37;</sup></p>
 
                             
                         </div>
@@ -37,7 +37,7 @@
                             </div>
                         </div>
                         <div class="mdl-card__supporting-text mdl-card--expand" id="temperature">
-                            <p class="weather-temperature">28<sup>&deg;</sup></p>
+                            <p class="weather-temperature" >{{latestData.temperature}}<sup>&deg;</sup></p>
 
                             <p class="weather-description">
                                 Haze & Cloudy
@@ -59,7 +59,7 @@
                             </div>
                         </div>
                         <div class="mdl-card__supporting-text mdl-card--expand" id="humidity">
-                            <p class="weather-temperature">28<sup>&#37;</sup></p>
+                            <p class="weather-temperature">{{latestData.humidity}}<sup>&#37;</sup></p>
 
                             <p class="weather-description">
                                 Haze & Cloudy 
@@ -101,7 +101,7 @@
                 </div>
 
                 <!-- Pie chart-->
-                <div class="mdl-cell mdl-cell--4-col-desktop mdl-cell--4-col-tablet mdl-cell--2-col-phone">
+                <!--<div class="mdl-cell mdl-cell--4-col-desktop mdl-cell--4-col-tablet mdl-cell--2-col-phone">
                     <div class="mdl-card mdl-shadow--2dp pie-chart">
                         <div class="mdl-card__title">
                             <h2 class="mdl-card__title-text">Moisture</h2>
@@ -112,60 +112,17 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div>-->
                 <!-- Trending widget-->
                 <div class="mdl-cell mdl-cell--4-col-desktop mdl-cell--4-col-tablet mdl-cell--2-col-phone">
-                    <div class="mdl-card mdl-shadow--2dp trending">
-                        <div class="mdl-card__title">
-                            <h2 class="mdl-card__title-text">Subscribers</h2>
-                        </div>
-                        <div class="mdl-card__supporting-text">
-                            <ul class="mdl-list" style=" overflow: auto;max-height:270px;">
-                                <li class="mdl-list__item">
-                                    <span class="mdl-list__item-primary-content list__item-text">Akash</span>
-                                    <span class="mdl-list__item-secondary-content">
-                                        <i class="material-icons trending__arrow-up" role="presentation">&#xE5C7</i>
-                                    </span>
-                                    <span class="mdl-list__item-secondary-content trending__percent">1 %</span>
-                                </li>
-                                <li class="mdl-list__item list__item--border-top">
-                                    <span class="mdl-list__item-primary-content list__item-text">Prateek</span>
-                                    <span class="mdl-list__item-secondary-content">
-                                        <i class="material-icons trending__arrow-down" role="presentation">&#xE5C5</i>
-                                    </span>
-                                    <span class="mdl-list__item-secondary-content trending__percent">2 %</span>
-                                </li>
-                                <li class="mdl-list__item list__item--border-top">
-                                    <span class="mdl-list__item-primary-content list__item-text ">Vasudev</span>
-                                    <span class="mdl-list__item-secondary-content">
-                                        <i class="material-icons trending__arrow-up" role="presentation">&#xE5C7</i>
-                                    </span>
-                                    <span class="mdl-list__item-secondary-content trending__percent">5 %</span>
-                                </li>
-                                <li class="mdl-list__item list__item--border-top">
-                                    <span class="mdl-list__item-primary-content list__item-text">Akshay</span>
-                                    <span class="mdl-list__item-secondary-content">
-                                        <i class="material-icons trending__arrow-up" role="presentation">&#xE5C7</i>
-                                    </span>
-                                    <span class="mdl-list__item-secondary-content trending__percent">18 %</span>
-                                </li>
-                                <li class="mdl-list__item list__item--border-top">
-                                    <span class="mdl-list__item-primary-content">Sudesh</span>
-                                    <span class="mdl-list__item-secondary-content">
-                                        <i class="material-icons trending__arrow-up" role="presentation">&#xE5C7</i>
-                                    </span>
-                                    <span class="mdl-list__item-secondary-content trending__percent">17 %</span>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
+                   
                 </div>
                
             </div>
 
            <div class="mdl-grid mdl-cell mdl-cell--3-col-desktop mdl-cell--12-col-tablet mdl-cell--4-col-phone mdl-cell--top">
                 <!-- Robot card-->
-                <div class="mdl-cell mdl-cell--12-col-desktop mdl-cell--6-col-tablet mdl-cell--2-col-phone">
+                <!--<div class="mdl-cell mdl-cell--12-col-desktop mdl-cell--6-col-tablet mdl-cell--2-col-phone">
                     <div class="mdl-card mdl-shadow--2dp robot">
                         <div class="mdl-card__title mdl-card--expand">
                             <h2 class="mdl-card__title-text">BB-8</h2>
@@ -178,7 +135,37 @@
                             <a href="http://www.starwars.com/databank/bb-8" target="_blank">Star Wars Databank</a>
                         </div>
                     </div>
-                </div>
+                </div>-->
+               <div class="mdl-cell mdl-cell--12-col-desktop mdl-cell--6-col-tablet mdl-cell--2-col-phone">
+                   <div class="mdl-card__title">
+                       <h2 class="mdl-card__title-text">Subscribers</h2>
+                   </div>
+                   <div class="mdl-card__supporting-text">
+                       <ul class="mdl-list" style=" overflow: auto;max-height:270px;">
+                           <li class="mdl-list__item">
+                               <span class="mdl-list__item-primary-content list__item-text">Akash</span>
+                               
+                             
+                           </li>
+                           <li class="mdl-list__item list__item--border-top">
+                               <span class="mdl-list__item-primary-content list__item-text">Prateek</span>
+                               
+                           </li>
+                           <li class="mdl-list__item list__item--border-top">
+                               <span class="mdl-list__item-primary-content list__item-text ">Vasudev</span>
+                               
+                           </li>
+                           <li class="mdl-list__item list__item--border-top">
+                               <span class="mdl-list__item-primary-content list__item-text">Akshay</span>
+                              
+                           </li>
+                           <li class="mdl-list__item list__item--border-top">
+                               <span class="mdl-list__item-primary-content">Sudesh</span>
+                              
+                           </li>
+                       </ul>
+                   </div>
+               </div>
                 <!-- ToDo_widget-->
                 <div class="mdl-cell mdl-cell--12-col-desktop mdl-cell--6-col-tablet mdl-cell--2-col-phone">
                     <div class="mdl-card mdl-shadow--2dp todo">
@@ -199,7 +186,7 @@
                     </div>
                 </div>
 
-            </div> -->
+            </div> 
         </div>
 
     </main>

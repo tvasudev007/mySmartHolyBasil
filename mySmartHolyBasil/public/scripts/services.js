@@ -1,8 +1,13 @@
 angular.module('app.services', [])
 
-.factory('BlankFactory', [function(){
+    .factory('fetchKPIData', function ($http) {
+        return {
+            getLatestValue: function () {
+                return $http.get("/data") ;
+            }
+        }
+    })
 
-}])
 
 .service('BlankService', [function(){
 

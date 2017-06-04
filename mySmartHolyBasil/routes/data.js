@@ -7,7 +7,7 @@ var db = require('../db/dbHandler');
 router.get('/', function (req, res) {
     
     db.fetchLatest(db.get(), function (data) {
-        res.send("latest values is : " + JSON.stringify(data));
+        res.send(JSON.stringify(data));
     })
     
     //res.render('index', { title: 'Express' });
